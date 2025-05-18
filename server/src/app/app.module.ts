@@ -7,13 +7,15 @@ import { TelegrafModule } from 'nestjs-telegraf';
 import { AppBot } from './app.bot';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppSchema } from './app.model';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal: true}),
     MongooseModule.forRoot(process.env.MONGO_TOKEN ?? ''),
     MongooseModule.forFeature([{ name: 'App', schema: AppSchema}]), 
-    TelegrafModule.forRoot({token: process.env.TELEGRAM_BOT_TOKEN})
+    TelegrafModule.forRoot({token: process.env.TELEGRAM_BOT_TOKEN}),
+    AuthModule
 ],
   controllers: [AppController],
   providers: [AppService, AppGateway, AppBot],

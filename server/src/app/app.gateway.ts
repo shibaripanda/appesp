@@ -11,7 +11,7 @@ import { UsePipes } from '@nestjs/common';
 import { WSValidationPipe } from 'src/utils/wsPipeValid';
 import { InjectBot } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
-import { tableDataView } from 'src/utils/tableDataView';
+// import { tableDataView } from 'src/utils/tableDataView';
 import { ClientDto } from './dto/client.dto';
 // import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
@@ -37,7 +37,9 @@ export class AppGateway {
   @SubscribeMessage('connect_start')
   connectStart(@ConnectedSocket() client: Socket, @MessageBody() payload: Pick<AppDto, 'id'>){
     console.log(payload)
-    client.emit('accesstoken', { accesstoken: 'JHDHD86SFSHF7SF86SF68SF' })
+    if(payload.id === '8C4F00E07B6D-00E07B6D'){
+      client.emit('accesstoken', { accesstoken: payload.id })
+    }
   }
 
   @UsePipes(new WSValidationPipe())
@@ -48,9 +50,9 @@ export class AppGateway {
 
   @UsePipes(new WSValidationPipe())
   @SubscribeMessage('sensorinformation')
-  async deleteImage(@ConnectedSocket() client: Socket, @MessageBody() payload: Omit<AppDto, 'ff'>){
+  deleteImage(@ConnectedSocket() client: Socket, @MessageBody() payload: Omit<AppDto, 'ff'>){
     console.log(payload)
-    await this.bot.telegram.sendMessage(599773731, tableDataView(payload))
+    // await this.bot.telegram.sendMessage(599773731, tableDataView(payload))
     // client.emit('servo_move', { angle: 90 });
   }
 
